@@ -1,0 +1,1150 @@
+@import "tailwindcss";
+
+:root {
+  /* Variables historiques */
+  --glass-bg: rgba(255, 255, 255, 0.34);
+  --glass-bg-ultra: rgba(255, 255, 255, 0.22);
+  --glass-border: rgba(255, 255, 255, 0.72);
+  --glass-border-subtle: rgba(15, 23, 42, 0.085);
+  --glass-blur: 14px;
+  --glass-radius: 24px;
+  --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-elastic: cubic-bezier(0.18, 1.15, 0.38, 1);
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ==========================================================================
+     Système Design Liquid Glass (WWDC25 / iOS 26)
+     ========================================================================== */
+  --lg-bg: rgba(255, 255, 255, 0.32);
+  --lg-bg-hover: rgba(255, 255, 255, 0.46);
+  --lg-bg-active: rgba(255, 255, 255, 0.58);
+  --lg-bg-subtle: rgba(255, 255, 255, 0.18);
+  --lg-bg-elevated: rgba(255, 255, 255, 0.72);
+  --lg-bg-dialog: rgba(255, 255, 255, 0.82);
+  --lg-bg-dark: rgba(15, 23, 42, 0.88);
+
+  --lg-border: rgba(255, 255, 255, 0.75);
+  --lg-border-hover: rgba(255, 255, 255, 0.95);
+  --lg-border-subtle: rgba(15, 23, 42, 0.08);
+
+  --lg-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.07),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.88),
+    inset 0 -1px 1.5px rgba(255, 255, 255, 0.35);
+  --lg-shadow-hover:
+    0 14px 38px rgba(15, 23, 42, 0.11),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.98),
+    inset 0 -1px 1px rgba(186, 230, 253, 0.4);
+  --lg-shadow-elevated:
+    0 24px 60px -12px rgba(15, 23, 42, 0.18),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.45);
+
+  --lg-blur: 20px;
+  --lg-blur-heavy: 28px;
+
+  --lg-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --lg-ease-elastic: cubic-bezier(0.18, 1.25, 0.35, 1);
+
+  --lg-fast: 160ms;
+  --lg-medium: 240ms;
+  --lg-slow: 320ms;
+
+  --lg-radius-xs: 8px;
+  --lg-radius-sm: 12px;
+  --lg-radius-md: 18px;
+  --lg-radius-lg: 24px;
+  --lg-radius-xl: 32px;
+  --lg-radius-full: 9999px;
+
+  --lg-focus: 0 0 0 3px rgba(59, 130, 246, 0.38);
+
+  /* Échelle centralisée de profondeur (Z-Index Scale) */
+  --z-base: 1;
+  --z-card: 10;
+  --z-floating: 20;
+  --z-dropdown: 50;
+  --z-sticky-nav: 60;
+  --z-modal: 100;
+  --z-toast: 150;
+  --z-tooltip: 200;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body);
+  color: #0f172a;
+  background-color: #f4f2ed;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #f4f2ed;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Masquage de la barre de défilement sur tous les conteneurs tout en préservant le scroll tactile et souris */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Surface principale Liquid Glass inspirée d'iOS 26 */
+.glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(185%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(185%);
+
+  box-shadow:
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85),
+    inset 0 -1px 1.5px rgba(255, 255, 255, 0.35),
+    inset 1px 0 1px rgba(255, 255, 255, 0.45),
+    0 0 0 0.5px var(--glass-border-subtle),
+    0 12px 32px -6px rgba(15, 23, 42, 0.065),
+    0 2px 6px rgba(15, 23, 42, 0.03);
+
+  transition:
+    border-color 280ms ease,
+    box-shadow 320ms var(--ease-liquid),
+    transform 320ms var(--ease-liquid),
+    background 280ms ease;
+}
+
+.glass-ultra {
+  --glass-bg: rgba(255, 255, 255, 0.20);
+  --glass-blur: 12px;
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      320px circle at var(--touch-x, 50%) var(--touch-y, 50%),
+      rgba(255, 255, 255, 0.52),
+      rgba(255, 255, 255, 0.14) 38%,
+      transparent 70%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.08) 38%,
+      transparent 55%,
+      rgba(255, 255, 255, 0.22) 100%
+    );
+}
+
+/* Reflet de réfraction chromatique subtil sur le bord supérieur */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 2px 6px rgba(186, 230, 253, 0.16);
+}
+
+/* Boutons Liquid Glass */
+.glass-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.32);
+
+  -webkit-backdrop-filter: blur(12px) saturate(185%);
+  backdrop-filter: blur(12px) saturate(185%);
+
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+    0 0 0 0.5px rgba(15, 23, 42, 0.09),
+    0 4px 14px rgba(15, 23, 42, 0.06);
+
+  transition:
+    transform 260ms var(--ease-elastic),
+    background 250ms ease,
+    box-shadow 250ms ease,
+    border-color 250ms ease;
+}
+
+.glass-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+  background:
+    radial-gradient(
+      140px circle at var(--touch-x, 50%) var(--touch-y, 50%),
+      rgba(255, 255, 255, 0.72),
+      transparent 65%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.52),
+      transparent 55%,
+      rgba(219, 234, 254, 0.25)
+    );
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.48);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.98),
+    inset 0 -1px 1px rgba(186, 230, 253, 0.4),
+    0 0 0 0.5px rgba(15, 23, 42, 0.12),
+    0 8px 20px rgba(15, 23, 42, 0.085);
+}
+
+.glass-button:active,
+.glass-button.is-pressed {
+  transform: scale(0.962);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+/* Variante bouton primaire en verre teinté cobalt cristallin */
+.glass-button-primary {
+  background-color: #00375e;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.48),
+    0 4px 14px rgba(0, 55, 94, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-button-primary::before {
+  background:
+    radial-gradient(
+      150px circle at var(--touch-x, 50%) var(--touch-y, 50%),
+      rgba(255, 255, 255, 0.34),
+      transparent 65%
+    );
+}
+
+.glass-button-primary:hover,
+.glass-button-primary:active,
+.glass-button-primary.is-pressed {
+  background-color: #ff9d00 !important;
+  color: #00375e !important;
+  border-color: rgba(255, 157, 0, 0.9);
+}
+
+/* Boutons Acheter spécifiques (repos: #00375e texte blanc, survol & clic: #ff9d00 texte #00375e) */
+.btn-acheter,
+.btn-buy {
+  background-color: #00375e !important;
+  color: #ffffff !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.btn-acheter:hover,
+.btn-acheter:active,
+.btn-acheter:focus,
+.btn-buy:hover,
+.btn-buy:active,
+.btn-buy:focus {
+  background-color: #ff9d00 !important;
+  color: #00375e !important;
+}
+
+/* Rétroaction native et instantanée au clic des boutons (0ms de latence) */
+
+/* Animation des fenêtres de dialogue Liquid Glass */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: grid;
+  place-items: center;
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.18);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 300ms ease,
+    visibility 300ms ease,
+    backdrop-filter 360ms ease,
+    -webkit-backdrop-filter 360ms ease;
+}
+
+.dialog-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+.dialog-panel {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 28px;
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.45),
+    0 0 0 0.5px rgba(15, 23, 42, 0.1),
+    0 24px 60px -12px rgba(15, 23, 42, 0.18);
+
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  filter: blur(5px);
+
+  transition:
+    opacity 320ms ease,
+    transform 450ms var(--ease-liquid),
+    filter 350ms ease;
+}
+
+.dialog-panel-compact {
+  width: min(100%, 520px);
+}
+
+.dialog-backdrop.is-open .dialog-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.dialog-backdrop:not(.is-open) .dialog-panel {
+  transform: translateY(8px) scale(0.98);
+}
+
+/* Reflet lumineux discret qui traverse la membrane liquide à l'ouverture */
+.dialog-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.dialog-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -120%;
+  width: 75%;
+  height: 180%;
+  transform: rotate(25deg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+}
+
+.dialog-backdrop.is-open .dialog-shimmer::after {
+  animation: liquidMembraneSweep 780ms 60ms var(--ease-liquid) forwards;
+}
+
+@keyframes liquidMembraneSweep {
+  0% {
+    left: -110%;
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.45;
+  }
+  100% {
+    left: 140%;
+    opacity: 0;
+  }
+}
+
+/* Transitions d'ouverture et de fermeture des vues / collections internes (250-450ms) */
+@keyframes viewSlideForward {
+  0% {
+    opacity: 0;
+    transform: translateX(22px) scale(0.986);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes viewSlideBackward {
+  0% {
+    opacity: 0;
+    transform: translateX(-22px) scale(0.986);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.view-transition-forward {
+  animation: viewSlideForward 360ms var(--ease-liquid) both;
+}
+
+.view-transition-backward {
+  animation: viewSlideBackward 360ms var(--ease-liquid) both;
+}
+
+/* Apparition des éléments de gauche à droite */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation de montée décalée de bas en haut (Carte & Bouton Acheter du Carrousel) */
+@keyframes slideUpFadeStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation de décalage d'affichage de bas en haut (350ms) pour les éléments des boîtes de dialogue */
+@keyframes slideUp350 {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-stagger {
+  animation: slideUp350 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-slide-up-stagger:nth-child(1) { animation-delay: 0ms; }
+.animate-slide-up-stagger:nth-child(2) { animation-delay: 60ms; }
+.animate-slide-up-stagger:nth-child(3) { animation-delay: 120ms; }
+.animate-slide-up-stagger:nth-child(4) { animation-delay: 180ms; }
+.animate-slide-up-stagger:nth-child(5) { animation-delay: 240ms; }
+.animate-slide-up-stagger:nth-child(6) { animation-delay: 300ms; }
+.animate-slide-up-stagger:nth-child(7) { animation-delay: 350ms; }
+
+
+/* Animation décalée de bas en haut pour la carte Nom */
+@keyframes heroSlideUpStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.005);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation fluide de droite à gauche avec effet de rebond pour la carte PU */
+@keyframes heroSlideRightBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(54px) scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-8px) scale(1.03);
+  }
+  75% {
+    transform: translateX(3px) scale(0.99);
+  }
+  90% {
+    transform: translateX(-1px) scale(1.002);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Animation de droite vers la gauche avec effet de rebond (Section nom, description & bouton acheter carrousel 4s) */
+@keyframes slideRightToLeftBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(60px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-10px) scale(1.02);
+  }
+  80% {
+    transform: translateX(4px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-hero-right-to-left-bounce {
+  animation: slideRightToLeftBounce 520ms cubic-bezier(0.18, 1.25, 0.35, 1) both;
+}
+
+/* Animation de texte fluide de bas vers le haut comme dans les journaux (News Ticker / Journal Headlines) */
+@keyframes newspaperSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  30% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-newspaper-title {
+  animation: newspaperSlideUp 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-newspaper-desc {
+  animation: newspaperSlideUp 650ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+  will-change: transform, opacity;
+}
+
+/* Classes pour le décalage fluide de 500ms avec amortissement (Nom court événement en premier, Description décalée de 500ms) */
+.animate-event-title {
+  animation: slideRightToLeftBounce 550ms cubic-bezier(0.22, 1.15, 0.36, 1) both;
+}
+
+.animate-event-desc {
+  animation: slideRightToLeftBounce 550ms cubic-bezier(0.22, 1.15, 0.36, 1) 500ms both;
+}
+
+/* ==========================================================================
+   SYSTÈME COMPLET LIQUID GLASS (WWDC25 / iOS 26)
+   ========================================================================== */
+
+/* Surface vitrée universelle */
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--lg-bg);
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius-md);
+  box-shadow: var(--lg-shadow);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(180%);
+  backdrop-filter: blur(var(--lg-blur)) saturate(180%);
+  transition:
+    background var(--lg-medium) var(--lg-ease),
+    border-color var(--lg-medium) var(--lg-ease),
+    box-shadow var(--lg-medium) var(--lg-ease),
+    transform var(--lg-medium) var(--lg-ease);
+  overflow: hidden;
+}
+
+/* Niveaux d'élévation visuelle (Depth Scale) */
+.liquid-glass-elevated {
+  background: var(--lg-bg-elevated);
+  box-shadow: var(--lg-shadow-elevated);
+  -webkit-backdrop-filter: blur(var(--lg-blur-heavy)) saturate(190%);
+  backdrop-filter: blur(var(--lg-blur-heavy)) saturate(190%);
+}
+
+.liquid-glass-subtle {
+  background: var(--lg-bg-subtle);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.liquid-glass-dialog-surface {
+  background: var(--lg-bg-dialog);
+  box-shadow: var(--lg-shadow-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+}
+
+/* Réfraction supérieure naturelle */
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    transparent 65%
+  );
+  opacity: 0.85;
+  z-index: 1;
+}
+
+/* Reflet dynamique contrôlé par la position du pointeur */
+.liquid-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    280px circle at var(--lg-x, var(--touch-x, 50%)) var(--lg-y, var(--touch-y, 50%)),
+    rgba(255, 255, 255, 0.32),
+    transparent 55%
+  );
+  opacity: 0.55;
+  transition: opacity var(--lg-medium) var(--lg-ease);
+  z-index: 1;
+}
+
+/* Survol interactif Liquid Glass */
+@media (hover: hover) and (pointer: fine) {
+  .liquid-glass-interactive:hover {
+    background: var(--lg-bg-hover);
+    border-color: var(--lg-border-hover);
+    box-shadow: var(--lg-shadow-hover);
+  }
+
+  .liquid-glass-interactive:hover::after {
+    opacity: 0.95;
+  }
+}
+
+.liquid-glass-interactive:active {
+  background: var(--lg-bg-active);
+  transform: scale(0.985);
+}
+
+.liquid-glass-interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--lg-shadow), var(--lg-focus);
+}
+
+.liquid-glass-interactive:disabled,
+.liquid-glass-interactive[aria-disabled="true"] {
+  opacity: 0.48;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Onde liquide / Goutte d'eau (Liquid Ripple) */
+.liquid-glass-ripple {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.liquid-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.32) 40%,
+    rgba(186, 230, 253, 0.18) 70%,
+    transparent 100%
+  );
+  transform: translate(-50%, -50%) scale(0);
+  animation: liquid-ripple-animation 550ms var(--lg-ease) forwards;
+  z-index: 30;
+}
+
+@keyframes liquid-ripple-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.08);
+    opacity: 0.95;
+  }
+  60% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.85);
+    opacity: 0;
+  }
+}
+
+/* Panneau déroulant Liquid Glass (Menus, Selects, Context Menus) */
+.liquid-glass-menu {
+  position: absolute;
+  z-index: 1000;
+  min-width: 220px;
+  padding: 8px;
+  border-radius: var(--lg-radius-lg);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 20px 50px -10px rgba(15, 23, 42, 0.22),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(15, 23, 42, 0.05);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(28px) saturate(190%);
+  transform-origin: top center;
+  animation: lg-menu-in 220ms var(--lg-ease) both;
+}
+
+.liquid-glass-menu[hidden] {
+  display: none;
+}
+
+.liquid-glass-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 160ms var(--lg-ease),
+    color 160ms var(--lg-ease),
+    transform 160ms var(--lg-ease);
+}
+
+.liquid-glass-menu-item:hover,
+.liquid-glass-menu-item.is-highlighted {
+  background: rgba(241, 245, 249, 0.85);
+  color: #0f172a;
+}
+
+.liquid-glass-menu-item.is-selected {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.liquid-glass-menu-item.is-destructive {
+  color: #dc2626;
+}
+
+.liquid-glass-menu-item.is-destructive:hover {
+  background: rgba(254, 242, 242, 0.9);
+  color: #b91c1c;
+}
+
+.liquid-glass-menu-item:active {
+  transform: scale(0.985);
+}
+
+.liquid-glass-menu-item:focus-visible {
+  outline: none;
+  box-shadow: var(--lg-focus);
+}
+
+@keyframes lg-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.liquid-glass-exit {
+  animation: lg-menu-out 160ms ease-in both;
+}
+
+@keyframes lg-menu-out {
+  to {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+}
+
+/* Champs de saisie Liquid Glass (LiquidGlassInput) */
+.liquid-glass-input {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 1.5px 2px rgba(15, 23, 42, 0.04),
+    0 2px 6px rgba(15, 23, 42, 0.02);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  transition:
+    border-color var(--lg-fast) var(--lg-ease),
+    background var(--lg-fast) var(--lg-ease),
+    box-shadow var(--lg-fast) var(--lg-ease);
+}
+
+.liquid-glass-input:hover {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.liquid-glass-input:focus,
+.liquid-glass-input:focus-within {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow:
+    var(--lg-focus),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Interrupteur Liquid Glass (LiquidGlassSwitch) */
+.liquid-glass-switch {
+  position: relative;
+  display: inline-flex;
+  height: 28px;
+  width: 50px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(148, 163, 184, 0.45);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.15);
+  transition:
+    background-color var(--lg-medium) var(--lg-ease),
+    border-color var(--lg-medium) var(--lg-ease),
+    box-shadow var(--lg-medium) var(--lg-ease);
+}
+
+.liquid-glass-switch.is-checked {
+  background: #2563eb;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.liquid-glass-switch-thumb {
+  pointer-events: none;
+  display: inline-block;
+  height: 22px;
+  width: 22px;
+  margin-top: 2px;
+  margin-left: 2px;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition:
+    transform var(--lg-medium) var(--lg-ease-elastic),
+    width var(--lg-fast) ease;
+}
+
+.liquid-glass-switch.is-checked .liquid-glass-switch-thumb {
+  transform: translateX(22px);
+}
+
+.liquid-glass-switch:active .liquid-glass-switch-thumb {
+  width: 26px;
+}
+
+/* Info-bulle Liquid Glass (LiquidGlassTooltip) */
+.liquid-glass-tooltip {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.25);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  animation: lg-tooltip-in 180ms var(--lg-ease) both;
+}
+
+@keyframes lg-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation de gauche vers la droite avec effet de rebond (Prix Unitaire - PU carrousel 4s) */
+@keyframes slideLeftToRightBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(10px) scale(1.02);
+  }
+  80% {
+    transform: translateX(-4px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-hero-left-to-right-bounce {
+  animation: slideLeftToRightBounce 520ms cubic-bezier(0.18, 1.25, 0.35, 1) both;
+}
+
+.animate-hero-card {
+  animation: slideUpFadeStagger 600ms var(--ease-elastic) both;
+}
+
+.animate-hero-card-up {
+  animation: heroSlideUpStagger 520ms cubic-bezier(0.18, 1.15, 0.38, 1) both;
+}
+
+.animate-hero-pu-bounce {
+  animation: heroSlideRightBounce 620ms cubic-bezier(0.18, 1.25, 0.35, 1) 120ms both;
+}
+
+.animate-hero-text {
+  animation: slideUpFadeStagger 550ms var(--ease-liquid) 100ms both;
+}
+
+.animate-hero-button {
+  animation: slideUpFadeStagger 600ms var(--ease-elastic) 250ms both;
+}
+
+/* ==========================================================================
+   BIDIRECTIONAL SCROLL REVEAL (FADE UP, SMOOTH MOTION & STAGGER EFFECT)
+   Paramètres conformes :
+   - Durée : 600 ms
+   - Déplacement vertical : 25 px
+   - Opacité : 0% à 100%
+   - Courbe : ease-out naturelle (cubic-bezier(0.16, 1, 0.3, 1))
+   - Stagger : 80 à 120 ms (délai calculé par élément en cascade)
+   - Bidirectionnel : entrée / sortie / ré-entrée
+   ========================================================================== */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 25px, 0);
+  transition-property: opacity, transform;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0ms;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Fluidité pour les interactions au survol une fois révélé */
+.scroll-reveal.is-revealed:hover {
+  transition-duration: 250ms;
+  transition-delay: 0ms;
+}
+
+.scroll-reveal.is-revealed.hover\:-translate-y-1:hover {
+  transform: translate3d(0, -4px, 0);
+}
+
+/* Fallback de sécurité si JS indisponible ou désactivé */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal.is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.reveal {
+  animation: slideInLeft 550ms var(--ease-liquid) both;
+}
+
+.reveal:nth-child(1) { animation-delay: 0ms; }
+.reveal:nth-child(2) { animation-delay: 80ms; }
+.reveal:nth-child(3) { animation-delay: 160ms; }
+.reveal:nth-child(4) { animation-delay: 240ms; }
+.reveal:nth-child(5) { animation-delay: 320ms; }
+.reveal:nth-child(6) { animation-delay: 400ms; }
+
+/* Onde de confirmation lors de l'ajout au panier */
+@keyframes toastRipplePulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.35);
+    opacity: 0;
+  }
+}
+
+.toast-ripple-ring {
+  animation: toastRipplePulse 850ms var(--ease-liquid) forwards;
+}
+
+/* Effet de rebond tactile sur clic des boutons du clavier PIN */
+@keyframes keyBounce {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.86);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.keypad-bounce {
+  animation: keyBounce 280ms cubic-bezier(0.18, 1.35, 0.35, 1) both;
+}
+
+/* Solution de remplacement si backdrop-filter n'est pas disponible */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass,
+  .liquid-glass {
+    background: rgba(250, 249, 246, 0.94);
+  }
+  .glass-button {
+    background: rgba(255, 255, 255, 0.96);
+  }
+  .liquid-glass-menu {
+    background: rgba(248, 250, 252, 0.98);
+  }
+  .dialog-panel {
+    background: rgba(252, 251, 249, 0.98);
+  }
+  .dialog-backdrop.is-open {
+    background: rgba(15, 23, 42, 0.42);
+  }
+}
+
+/* Accessibilité : Focus visible haute lisibilité */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Masquer la barre de défilement horizontale sur mobile tout en gardant le scroll fluide */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Accessibilité : Préférences de réduction des animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

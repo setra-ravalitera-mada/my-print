@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <defs>
+    <!-- Pétale unitaire avec courbe organique exacte (Trèfle / Empreinte 4 pétales) -->
+    <path
+      id="petal-quadrant"
+      d="M 454 482
+         L 160 482
+         C 105 482 62 458 42 416
+         C 16 360 8 290 14 220
+         C 18 165 30 100 36 32
+         C 45 42 85 24 140 14
+         C 200 4 275 4 340 14
+         C 400 24 450 56 476 100
+         C 482 110 482 130 482 160
+         L 482 454
+         C 482 472 472 482 454 482
+         Z"
+    />
+  </defs>
+
+  <g fill="currentColor">
+    <!-- Pétale Haut-Gauche (0°) -->
+    <use href="#petal-quadrant" />
+
+    <!-- Pétale Haut-Droit (90°) -->
+    <use href="#petal-quadrant" transform="rotate(90 500 500)" />
+
+    <!-- Pétale Bas-Droit (180°) -->
+    <use href="#petal-quadrant" transform="rotate(180 500 500)" />
+
+    <!-- Pétale Bas-Gauche (270°) -->
+    <use href="#petal-quadrant" transform="rotate(270 500 500)" />
+  </g>
+</svg>

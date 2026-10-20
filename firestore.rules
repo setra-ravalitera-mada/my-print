@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll(['id', 'createdAt', 'status', 'totalPieces', 'totalAmount', 'items'])
+        && data.id is string && data.id.size() <= 64
+        && data.createdAt is string && data.createdAt.size() <= 64
+        && data.status in ['nouveau', 'proforma_demande', 'paye_mvola', 'a_livrer_paiement_reception', 'bat_en_cours', 'en_production', 'expedie']
+        && data.totalPieces is number && data.totalPieces >= 1
+        && data.totalAmount is number && data.totalAmount >= 0
+        && data.items is list && data.items.size() <= 50;
+    }
+
+    function isValidSetting(data) {
+      return data.keys().hasAll(['key', 'value'])
+        && data.key is string && data.key.size() <= 128
+        && data.value is string && data.value.size() <= 1048576;
+    }
+
+    // Sécurité globale par défaut : verrouiller tout document non explicite
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Commandes & devis passés sur la boutique My PRINT
+    match /orders/{orderId} {
+      allow get, list: if true;
+      allow create: if isValidId(orderId) && isValidOrder(incoming());
+      allow update: if isValidId(orderId) && isValidOrder(incoming());
+      allow delete: if isValidId(orderId);
+    }
+
+    // Paramètres système (code PIN et réglages persistants)
+    match /settings/{settingId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(settingId) && isValidSetting(incoming());
+      allow delete: if isValidId(settingId);
+    }
+  }
+}

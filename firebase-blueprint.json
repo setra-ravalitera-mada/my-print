@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Order",
+      "description": "Customer order or customized goodies quote in Ariary",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique order reference, e.g. MP-2026-9041"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of order placement"
+        },
+        "clientNote": {
+          "type": "string",
+          "description": "Delivery instructions or project reference"
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "Client email"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["nouveau", "proforma_demande", "paye_mvola", "a_livrer_paiement_reception", "bat_en_cours", "en_production", "expedie"],
+          "description": "Production and approval workflow status"
+        },
+        "totalPieces": {
+          "type": "number",
+          "description": "Total quantity of custom goodies"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total amount in Ariary"
+        },
+        "items": {
+          "type": "array",
+          "description": "Ordered items with variants and customization"
+        }
+      },
+      "required": ["id", "createdAt", "status", "totalPieces", "totalAmount", "items"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "System setting and access PIN",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Configuration identifier"
+        },
+        "value": {
+          "type": "string",
+          "description": "Configuration value or serialized JSON payload"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp of last modification"
+        }
+      },
+      "required": ["key", "value"]
+    }
+  },
+  "firestore": {
+    "/orders/{orderId}": {
+      "schema": "#/entities/Order",
+      "description": "Collection of orders and quotes placed on My PRINT"
+    },
+    "/settings/{settingId}": {
+      "schema": "#/entities/Setting",
+      "description": "Application settings including admin access key"
+    }
+  }
+}

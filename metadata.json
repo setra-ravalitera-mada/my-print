@@ -1,0 +1,8 @@
+{
+  "name": "Atelier Prisme — Imprimerie & Goodies Liquid Glass",
+  "description": "Boutique e-commerce haut de gamme d'objets personnalisés et d'imprimerie d'entreprise au design Liquid Glass inspiré d'iOS 26.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

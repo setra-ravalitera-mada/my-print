@@ -1,0 +1,27 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Autoriser tous les dossiers utilisés par l'application
+    match /Image-Produit/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /hero_images/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /company_logos/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /event_slides/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /bg_images/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /uploads/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
